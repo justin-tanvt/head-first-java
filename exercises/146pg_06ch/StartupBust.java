@@ -17,6 +17,10 @@ public class StartupBust {
       startup.setLocationCells(helper.placeStartup(STARTUP_SIZE));
       this.startups.add(startup);
     }
+
+    System.out.println("Your goal is to sink three Startups.");
+    System.out.println("poniez, hacqi, cabista");
+    System.out.println("Try to sink them all in the fewest number of guesses");
   }
 
   public void startPlaying() {
@@ -39,6 +43,7 @@ public class StartupBust {
       }
 
       if (result.equals("kill")) {
+        System.out.println("Ouch! You sunk " + startup.getName() + " :(");
         this.startups.remove(startup);
         break;
       }
@@ -54,7 +59,7 @@ public class StartupBust {
       System.out.println("You got out before your options sank.");
     } else {
       System.out.println("Took you long enough. " + this.numOfGuesses + " guesses.");
-      System.out.println("Fish are dancing with your options");
+      System.out.println("Fish are dancing with your options.");
     }
   }
 

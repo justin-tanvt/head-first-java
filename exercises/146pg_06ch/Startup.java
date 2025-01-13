@@ -31,7 +31,6 @@ public class Startup {
       }
     }
 
-    System.out.println(result);
     return result;
   }
 

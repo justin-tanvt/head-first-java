@@ -9,6 +9,6 @@ public class Main {
         b.m2();
         b.m3();
         ab.m1();
-        ab.m3();„
+        ab.m3();
     }
 }

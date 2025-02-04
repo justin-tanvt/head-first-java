@@ -11,5 +11,6 @@ public class JukeboxStreams {
 			.map(song -> song.getArtist())						// map the stream from song to artist names
 			.filter(artist -> !artist.equals("The Beatles"))	// filter out 'The Beatles' from artist names
 			.collect(Collectors.toList());						// terminate stream by collecting into a List
+    System.out.println(result);
 	}
 }

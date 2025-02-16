@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 public class MockMoreSongs {
 
-    private static final Path SONG_LIST_FILEPATH = Paths.get("..", "common", "SongListMore.txt");
+    private static final Path SONG_LIST_FILEPATH = Paths.get("..", "..", "common", "SongListMore.txt");
     private static final String SONG_LIST_DELIMITER = ", ";
     private static final int SONG_LIST_NUMBER_OF_DETAILS = 3;
 

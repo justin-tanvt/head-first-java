@@ -28,12 +28,12 @@ public class MiniMusicCmdLine {
 			track.add(changeInstrument);
 
 			ShortMessage msg2 = new ShortMessage();
-			msg2.setMessage(NOTE_ON, 1, instrument, 100);
+			msg2.setMessage(NOTE_ON, 1, note, 100);
 			MidiEvent noteOn = new MidiEvent(msg2, 1);
 			track.add(noteOn);
 
 			ShortMessage msg3 = new ShortMessage();
-			msg3.setMessage(NOTE_OFF, 1, instrument, 100);
+			msg3.setMessage(NOTE_OFF, 1, note, 100);
 			MidiEvent noteOff = new MidiEvent(msg2, 16);
 			track.add(noteOff);
 

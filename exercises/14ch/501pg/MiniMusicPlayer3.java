@@ -79,11 +79,15 @@ public class MiniMusicPlayer3 {
 	}
 
 	class MyDrawPanel extends JPanel implements ControllerEventListener {
+		// configure padding boundaries where rectangles should not appear
 		private static final int WIDTH_PADDING = 10;
 		private static final int HEIGHT_PADDING = 10;
+
+		// configure minimum width and height for randomly-generated rectangles
 		private static final int RECTANGLE_MIN_WIDTH = 10;
 		private static final int RECTANGLE_MIN_HEIGHT = 10;
 
+		// for computing random X and Y position of rectangle's top left corner
 		private static final int XPOS_MAX = PANEL_WIDTH - WIDTH_PADDING - RECTANGLE_MIN_WIDTH;
 		private static final int YPOS_MAX = PANEL_HEIGHT - HEIGHT_PADDING - RECTANGLE_MIN_HEIGHT;
 		private static final int XPOS_VARIABLE = XPOS_MAX - WIDTH_PADDING;
@@ -101,15 +105,20 @@ public class MiniMusicPlayer3 {
 		}	
 
 		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
 			if (msg) {
 				int r = random.nextInt(250);
 				int gr = random.nextInt(250);
 				int b = random.nextInt(250);
 				g.setColor(new Color(r, gr, b));
 
+				// randomise X and Y position of rectangle's top left corner
+				// position must be such that minimum size rectangle fits within padding boundaries
 				int xPos = WIDTH_PADDING + random.nextInt(XPOS_VARIABLE);
 				int yPos = HEIGHT_PADDING + random.nextInt(YPOS_VARIABLE);
 
+				// given X and Y positions above, randomise width and height of rectangle
+				// width and height must be greater than minimum size and rectangle should fit within padding boundaries
 				int widthVariable = PANEL_WIDTH - xPos - RECTANGLE_MIN_WIDTH - WIDTH_PADDING;
 				int heightVariable = PANEL_HEIGHT - yPos - RECTANGLE_MIN_HEIGHT - HEIGHT_PADDING;
 				int width = RECTANGLE_MIN_WIDTH + random.nextInt(widthVariable);

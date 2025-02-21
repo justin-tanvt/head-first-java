@@ -23,7 +23,7 @@ public class Square implements Serializable {
 		mySquare.save(filename);
 
 		mySquare = null;
-		mySquare = Square.open(filename);
+		mySquare = Square.load(filename);
 		System.out.println(mySquare);
 		System.out.println(mySquare.width + ", " + mySquare.height);
 	}
@@ -50,7 +50,7 @@ public class Square implements Serializable {
 		return success;
 	}
 
-	private static Square open(String filename) {
+	private static Square load(String filename) {
 		Square s = null;
     ObjectInputStream is = null;
 		try {

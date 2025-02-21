@@ -29,31 +29,48 @@ public class Square implements Serializable {
 	}
 
 	private boolean save(String filename) {
+    boolean success = false;
+    ObjectOutputStream os = null;
 		try {
 			FileOutputStream fs = new FileOutputStream(filename);
-			ObjectOutputStream os = new ObjectOutputStream(fs);
+			os = new ObjectOutputStream(fs);
 			os.writeObject(this);
-			os.close();
+      success = true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
-		}
-		return true;
+		} finally {
+      if (os != null) {
+        try {
+          os.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }
+		return success;
 	}
 
 	private static Square open(String filename) {
 		Square s = null;
+    ObjectInputStream is = null;
 		try {
 			FileInputStream fs = new FileInputStream(filename);
-			ObjectInputStream os = new ObjectInputStream(fs);
-			Object o = os.readObject();
+			is = new ObjectInputStream(fs);
+			Object o = is.readObject();
 			if (o instanceof Square) {
 				s = (Square) o;
 			}
-			os.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		} finally {
+      if (is != null) {
+        try {
+          is.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }
 		return s;
 	}
 

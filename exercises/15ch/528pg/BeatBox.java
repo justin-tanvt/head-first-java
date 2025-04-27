@@ -120,6 +120,7 @@ public class BeatBox {
       sequencer.setTempoInBPM(TRACK_TEMPO_IN_BPM);
     } catch (Exception e) {
       e.printStackTrace();
+      throw new RuntimeException();
     }
   }
 

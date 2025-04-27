@@ -162,6 +162,7 @@ public class BeatBox {
       sequencer.start();
     } catch (Exception e) {
       e.printStackTrace();
+      throw new RuntimeException();
     }
   }
 
@@ -184,6 +185,7 @@ public class BeatBox {
       event = new MidiEvent(msg, tick);
     } catch (Exception e) {
       e.printStackTrace();
+      throw new RuntimeException();
     }
     return event;
   }

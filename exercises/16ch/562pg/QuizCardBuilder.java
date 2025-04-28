@@ -25,7 +25,7 @@ public class QuizCardBuilder {
 
 	public void go() {
 		frame = new JFrame(WINDOW_NAME);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel mainPanel = new JPanel();
 		Font bigFont = new Font(FONT_NAME, Font.BOLD, FONT_SIZE);
 

@@ -18,7 +18,7 @@ public class QuizCardPlayer {
 
 	// constants
 	private static final String BUTTON_LABEL_SHOW_ANSWER = "Show Answer";
-	private static final String BUTTON_LABEL_NEXT_QUESTION = "Next Question";
+	private static final String BUTTON_LABEL_NEXT_QUESTION = "Next Card";
 	private static final String POPUP_ALERT_TITLE = "Alert";
 	private static final String POPUP_ALERT_MESSAGE_NO_CARDS = "No cards to display!";
 
@@ -50,9 +50,10 @@ public class QuizCardPlayer {
 		// create text area
 		Font bigFont = new Font(FONT_NAME, Font.BOLD, FONT_SIZE);
 		textArea = new JTextArea(TEXT_AREA_HEIGHT, TEXT_AREA_WIDTH);
+		textArea.setFont(bigFont);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
-		textArea.setFont(bigFont);
+		textArea.setEditable(false);
 		JScrollPane scroller = new JScrollPane(textArea);
 		scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

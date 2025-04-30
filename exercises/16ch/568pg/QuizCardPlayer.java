@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.stream.*;
 
 public class QuizCardPlayer {
 
@@ -17,6 +19,8 @@ public class QuizCardPlayer {
 	// constants
 	private static final String BUTTON_LABEL_SHOW_ANSWER = "Show Answer";
 	private static final String BUTTON_LABEL_NEXT_QUESTION = "Next Question";
+	private static final String POPUP_ALERT_TITLE = "Alert";
+	private static final String POPUP_ALERT_MESSAGE_NO_CARDS = "No cards to display!";
 
 	private ArrayList<QuizCard> cardList = new ArrayList<>();
 	private int currentCardIndex;
@@ -28,8 +32,6 @@ public class QuizCardPlayer {
 
 	public static void main(String[] args) {
 		QuizCardPlayer p = new QuizCardPlayer();
-		p.cardList.add(new QuizCard("foo1", "bar1"));
-		p.cardList.add(new QuizCard("foo2", "bar2"));
 		p.go();
 	}
 
@@ -73,18 +75,18 @@ public class QuizCardPlayer {
 	}
 
 	private void nextCard() {
-		// if not showing question, load new quizcard and show question
+		// if not showing question, load new card and show question
 		if (!isShowQuestion) {
-			currentCardIndex++;
-			if (currentCardIndex < cardList.size()) {
+			if (currentCardIndex + 1 < cardList.size()) {
+				currentCardIndex++;
 				currentCard = cardList.get(currentCardIndex);
 				textArea.setText(currentCard.getQuestion());
 				nextButton.setText(BUTTON_LABEL_SHOW_ANSWER);
 				nextButton.setEnabled(true);
 				isShowQuestion = true;
-			// no cards to show, disable button
+			// no cards to show, alert user via pop up
 			} else {
-				nextButton.setEnabled(false);	
+				createPopupAlert(POPUP_ALERT_MESSAGE_NO_CARDS);
 			}
 
 		// if already showing question, show answer
@@ -101,24 +103,38 @@ public class QuizCardPlayer {
 	}
 
 	private void open() {
-		// prompt user to select save file
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.showOpenDialog(frame);
-		// load from file
-		// loadFile(fileChooser.getSelectedFile());
-		// show card
-		currentCardIndex = -1;
-		nextCard();
+
+		if(loadFile(fileChooser.getSelectedFile())) {
+			currentCardIndex = -1;
+			nextCard();
+		} else {
+			createPopupAlert("Failed to load file!");
+		}
 	}
 
-	private void loadFile(File file) {
-		// read file line by line
-		// for each line, make card
+	private boolean loadFile(File file) {
+		try (Stream<String> lines = Files.lines(file.toPath())) {
+			lines.forEach(line -> makeCard(line));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;	
+		}
+		return true;
 	}
 
 	private void makeCard(String lineToParse) {
 		// split line by separator
+		String[] parts = lineToParse.split(QuizCardConstants.SAVEFILE_QUESTION_ANSWER_SEPARATOR);
 		// if two string parts, create card and save to cardlist 
+		if (parts.length >= 2) {
+			cardList.add(new QuizCard(parts[0], parts[1]));
+		}
+	}
+
+	private void createPopupAlert(String message) {
+		JOptionPane.showMessageDialog(frame, message, POPUP_ALERT_TITLE, JOptionPane.ERROR_MESSAGE);
 	}
 
 }

@@ -26,17 +26,6 @@ public class QuizCardBuilder {
 	public void go() {
 		frame = new JFrame(WINDOW_NAME);
 
-		// create question and answer text area
-		Font bigFont = new Font(FONT_NAME, Font.BOLD, FONT_SIZE);
-		question = createTextArea(bigFont);
-		JScrollPane qScroller = createScroller(question);
-		answer = createTextArea(bigFont);
-		JScrollPane aScroller = createScroller(answer);
-
-		// create button
-		JButton nextButton = new JButton("Next Card");
-		nextButton.addActionListener(e -> nextCard());
-
 		// create and set menu bar
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
@@ -48,6 +37,17 @@ public class QuizCardBuilder {
 		fileMenu.add(saveMenuItem);
 		menuBar.add(fileMenu);
 		frame.setJMenuBar(menuBar);
+
+		// create question and answer text area
+		Font bigFont = new Font(FONT_NAME, Font.BOLD, FONT_SIZE);
+		question = createTextArea(bigFont);
+		JScrollPane qScroller = createScroller(question);
+		answer = createTextArea(bigFont);
+		JScrollPane aScroller = createScroller(answer);
+
+		// create button
+		JButton nextButton = new JButton("Next Card");
+		nextButton.addActionListener(e -> nextCard());
 
 		// arrange main GUI elements
 		JPanel mainPanel = new JPanel();

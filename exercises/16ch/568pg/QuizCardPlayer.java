@@ -108,7 +108,6 @@ public class QuizCardPlayer {
 		fileChooser.showOpenDialog(frame);
 
 		if(loadFile(fileChooser.getSelectedFile())) {
-			currentCardIndex = -1;
 			nextCard();
 		} else {
 			createPopupAlert("Failed to load file!");
@@ -116,6 +115,8 @@ public class QuizCardPlayer {
 	}
 
 	private boolean loadFile(File file) {
+		cardList = new ArrayList<>();
+		currentCardIndex = -1;
 		try (Stream<String> lines = Files.lines(file.toPath())) {
 			lines.forEach(line -> makeCard(line));
 		} catch (Exception e) {

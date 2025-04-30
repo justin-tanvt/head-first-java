@@ -14,14 +14,23 @@ public class QuizCardPlayer {
 	private static final String FONT_NAME = "sanserif";
 	private static final int FONT_SIZE = 24;
 
+	// constants
+	private static final String BUTTON_LABEL_SHOW_ANSWER = "Show Answer";
+	private static final String BUTTON_LABEL_NEXT_QUESTION = "Next Question";
+
 	private ArrayList<QuizCard> cardList = new ArrayList<>();
 	private int currentCardIndex;
+	private QuizCard currentCard;
+	private boolean isShowQuestion = false;
 	private JFrame frame;
 	private JTextArea textArea;
 	private JButton nextButton;
 
 	public static void main(String[] args) {
-		new QuizCardPlayer().go();
+		QuizCardPlayer p = new QuizCardPlayer();
+		p.cardList.add(new QuizCard("foo1", "bar1"));
+		p.cardList.add(new QuizCard("foo2", "bar2"));
+		p.go();
 	}
 
 	public void go() {
@@ -38,7 +47,7 @@ public class QuizCardPlayer {
 
 		// create text area
 		Font bigFont = new Font(FONT_NAME, Font.BOLD, FONT_SIZE);
-		JTextArea textArea = new JTextArea(TEXT_AREA_HEIGHT, TEXT_AREA_WIDTH);
+		textArea = new JTextArea(TEXT_AREA_HEIGHT, TEXT_AREA_WIDTH);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setFont(bigFont);
@@ -47,7 +56,8 @@ public class QuizCardPlayer {
 		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 		// create button
-		nextButton = new JButton("Show Answer");
+		nextButton = new JButton(BUTTON_LABEL_SHOW_ANSWER);
+		nextButton.setEnabled(false);
 		nextButton.addActionListener(e -> nextCard());
 
 		// arrange main GUI elements
@@ -62,12 +72,42 @@ public class QuizCardPlayer {
 		frame.setVisible(true);
 	}
 
-	private void nextCard() {}
+	private void nextCard() {
+		if (isShowQuestion) {
+			textArea.setText(currentCard.getAnswer());
+			nextButton.setText(BUTTON_LABEL_NEXT_QUESTION);
+			isShowQuestion = false;
 
-	private void open() {}
+			// disable button if no more cards left to show
+			if (currentCardIndex == cardList.size() - 1) {
+				nextButton.setEnabled(false);
+			}
+		} else {
+			currentCardIndex++;
+			currentCard = cardList.get(currentCardIndex);
+			textArea.setText(currentCard.getQuestion());
+			nextButton.setText(BUTTON_LABEL_SHOW_ANSWER);
+			isShowQuestion = true;
+		}
+	}
 
-	private void loadFile(File file) {}
+	private void open() {
+		// prompt user to select save file
+		// load from file
+		// show card
+		currentCardIndex = -1;
+		nextCard();
+		nextButton.setEnabled(true);
+	}
 
-	private void makeCard(String lineToParse) {}
+	private void loadFile(File file) {
+		// read file line by line
+		// for each line, make card
+	}
+
+	private void makeCard(String lineToParse) {
+		// split line by separator
+		// if two string parts, create card and save to cardlist 
+	}
 
 }

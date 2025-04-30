@@ -73,7 +73,22 @@ public class QuizCardPlayer {
 	}
 
 	private void nextCard() {
-		if (isShowQuestion) {
+		// if not showing question, load new quizcard and show question
+		if (!isShowQuestion) {
+			currentCardIndex++;
+			if (currentCardIndex < cardList.size()) {
+				currentCard = cardList.get(currentCardIndex);
+				textArea.setText(currentCard.getQuestion());
+				nextButton.setText(BUTTON_LABEL_SHOW_ANSWER);
+				nextButton.setEnabled(true);
+				isShowQuestion = true;
+			// no cards to show, disable button
+			} else {
+				nextButton.setEnabled(false);	
+			}
+
+		// if already showing question, show answer
+		} else {
 			textArea.setText(currentCard.getAnswer());
 			nextButton.setText(BUTTON_LABEL_NEXT_QUESTION);
 			isShowQuestion = false;
@@ -82,22 +97,18 @@ public class QuizCardPlayer {
 			if (currentCardIndex == cardList.size() - 1) {
 				nextButton.setEnabled(false);
 			}
-		} else {
-			currentCardIndex++;
-			currentCard = cardList.get(currentCardIndex);
-			textArea.setText(currentCard.getQuestion());
-			nextButton.setText(BUTTON_LABEL_SHOW_ANSWER);
-			isShowQuestion = true;
 		}
 	}
 
 	private void open() {
 		// prompt user to select save file
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.showOpenDialog(frame);
 		// load from file
+		// loadFile(fileChooser.getSelectedFile());
 		// show card
 		currentCardIndex = -1;
 		nextCard();
-		nextButton.setEnabled(true);
 	}
 
 	private void loadFile(File file) {

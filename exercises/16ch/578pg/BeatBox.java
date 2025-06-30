@@ -15,6 +15,11 @@ import javax.swing.JButton;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.io.ObjectOutputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import static javax.sound.midi.ShortMessage.CONTROL_CHANGE;
 import static javax.sound.midi.ShortMessage.NOTE_OFF;
@@ -42,12 +47,16 @@ public class BeatBox {
   private static final int CONTROLLER_EVENT_NOTE = 127;
   private static final int NOTE_OFF_CONST = 0;
 
-  private ArrayList<JCheckBox> checkboxList;
+  // savefile constants
+  private static final String SAVEFILE_NAME = "Checkbox.ser";
+
   private Sequencer sequencer;
   private Sequence sequence;
   private Track track;
+  private ArrayList<JCheckBox> checkboxList;
   private final Instrument[] instruments = Instrument.values();
   private final int instrumentsCount = instruments.length;
+  private final int checkboxCount = TRACK_LENGTH_IN_BEATS * instrumentsCount;
 
   public static void main(String[] args) {
     new BeatBox().buildGUI();
@@ -98,7 +107,7 @@ public class BeatBox {
     }
     // --- instrument checkboxes
     checkboxList = new ArrayList<>();
-    for (int i = 0; i < TRACK_LENGTH_IN_BEATS * instrumentsCount; i++) {
+    for (int i = 0; i < checkboxCount; i++) {
       JCheckBox c = new JCheckBox();
       c.setSelected(false);
       checkboxList.add(c);
@@ -113,10 +122,16 @@ public class BeatBox {
     upTempo.addActionListener(e -> changeTempo(1.0f * (100 + TEMPO_ADJUSTMENT_PERCENTAGE) / 100));
     JButton downTempo = new JButton("Tempo Down");
     downTempo.addActionListener(e -> changeTempo(1.0f * (100 - TEMPO_ADJUSTMENT_PERCENTAGE) / 100));
+    JButton writeFile = new JButton("serializeIt");
+    writeFile.addActionListener(e -> writeFile());
+    JButton readFile = new JButton("restore");
+    readFile.addActionListener(e -> readFile());
     buttonBox.add(start);
     buttonBox.add(stop);
     buttonBox.add(upTempo);
     buttonBox.add(downTempo);
+    buttonBox.add(writeFile);
+    buttonBox.add(readFile);
 
     setUpMidi();
 
@@ -203,5 +218,38 @@ public class BeatBox {
       throw new RuntimeException();
     }
     return event;
+  }
+
+  private void writeFile() {
+    boolean[] checkboxState = new boolean[checkboxCount];
+
+    for (int i = 0; i < checkboxCount; i++) {
+      if (checkboxList.get(i).isSelected()) {
+        checkboxState[i] = true;
+      }
+    }
+
+    try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(SAVEFILE_NAME))) {
+      os.writeObject(checkboxState);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void readFile() {
+    boolean[] checkboxState = null;
+
+    try (ObjectInputStream is = new ObjectInputStream(new FileInputStream(SAVEFILE_NAME))) {
+      checkboxState = (boolean[]) is.readObject();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    for (int i = 0; i < checkboxCount; i++) {
+      checkboxList.get(i).setSelected(checkboxState[i]);
+    }
+
+    sequencer.stop();
+    buildTrackAndStart();
   }
 }

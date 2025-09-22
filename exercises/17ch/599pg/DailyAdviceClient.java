@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 public class DailyAdviceClient {
   public void go() {
-    InetSocketAddress serverAddress = new InetSocketAddress("localhost", 8080);
+    InetSocketAddress serverAddress = new InetSocketAddress("127.0.0.1", 8080);
     try (SocketChannel socketChannel = SocketChannel.open(serverAddress)) {
       Reader channelReader = Channels.newReader(socketChannel, StandardCharsets.UTF_8);
       BufferedReader reader = new BufferedReader(channelReader);

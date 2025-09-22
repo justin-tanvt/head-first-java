@@ -22,7 +22,7 @@ public class DailyAdviceServer {
 		System.out.println("DailyAdviceServer started!");
 
 		try (ServerSocketChannel serverChannel = ServerSocketChannel.open()) {
-			serverChannel.bind(new InetSocketAddress(8080));
+			serverChannel.bind(new InetSocketAddress("127.0.0.1", 8080));
 
 			while (serverChannel.isOpen()) {
 				SocketChannel clientChannel = serverChannel.accept();

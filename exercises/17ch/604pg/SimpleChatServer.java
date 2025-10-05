@@ -85,6 +85,7 @@ public class SimpleChatServer {
         }
         debug("exited reader while-loop");
       } catch (IOException e) {
+        debug("IOException happened while reading messages in while-loop");
         e.printStackTrace();
       }
     }

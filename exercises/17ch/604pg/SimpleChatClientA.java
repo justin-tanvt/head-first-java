@@ -73,8 +73,9 @@ public class SimpleChatClientA {
   private void sendMessage() {
     debug("sendMessage()");
     writer.println(outgoing.getText());
-    debug("sent message to server");
+    debug("sent message to print writer");
     writer.flush();
+    debug("flushed print writer to server");
     outgoing.setText("");
     debug("reset text field");
     outgoing.requestFocus();

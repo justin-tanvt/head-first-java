@@ -72,7 +72,12 @@ public class SimpleChatServer {
       String message;
       debug("going to start reading messages from reader in a while-loop");
       try {
-        while ((message = reader.readLine()) != null) {
+        while (true) {
+          message = reader.readLine();
+          if (message == null) {
+            debug("received null message from reader, exiting reader while-loop");
+            break;
+          }
           debug("received non-null message from reader");
           System.out.println("received from client : " + message);
           tellEveryone(message);
